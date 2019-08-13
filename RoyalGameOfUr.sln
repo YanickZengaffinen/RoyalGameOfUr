@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalGameOfUr", "RoyalGameOfUr\RoyalGameOfUr.csproj", "{D4CAED13-0E07-4DC5-8080-466C7E9FE344}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoyalGameOfUr", "RoyalGameOfUr\RoyalGameOfUr.csproj", "{D4CAED13-0E07-4DC5-8080-466C7E9FE344}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneticAlgorithms", "ZenAI\GeneticAlgorithms\GeneticAlgorithms.csproj", "{391637D7-64D6-4D00-844F-6B24A6370052}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZenAI", "ZenAI", "{98E88F66-B852-444E-9C69-EF0D69ACC70E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetworks", "ZenAI\NeuralNetworks\NeuralNetworks.csproj", "{84FB8E6D-1585-4C89-A125-A58B16BDD853}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +21,21 @@ Global
 		{D4CAED13-0E07-4DC5-8080-466C7E9FE344}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4CAED13-0E07-4DC5-8080-466C7E9FE344}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4CAED13-0E07-4DC5-8080-466C7E9FE344}.Release|Any CPU.Build.0 = Release|Any CPU
+		{391637D7-64D6-4D00-844F-6B24A6370052}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{391637D7-64D6-4D00-844F-6B24A6370052}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{391637D7-64D6-4D00-844F-6B24A6370052}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{391637D7-64D6-4D00-844F-6B24A6370052}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84FB8E6D-1585-4C89-A125-A58B16BDD853}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84FB8E6D-1585-4C89-A125-A58B16BDD853}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84FB8E6D-1585-4C89-A125-A58B16BDD853}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84FB8E6D-1585-4C89-A125-A58B16BDD853}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{391637D7-64D6-4D00-844F-6B24A6370052} = {98E88F66-B852-444E-9C69-EF0D69ACC70E}
+		{84FB8E6D-1585-4C89-A125-A58B16BDD853} = {98E88F66-B852-444E-9C69-EF0D69ACC70E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {89D0BC1C-C465-4D9D-9CB8-2E5F2506A072}

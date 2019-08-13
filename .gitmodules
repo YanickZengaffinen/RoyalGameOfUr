@@ -1,0 +1,3 @@
+[submodule "ZenAI"]
+	path = ZenAI
+	url = https://github.com/YanickZengaffinen/ZenAI.git
