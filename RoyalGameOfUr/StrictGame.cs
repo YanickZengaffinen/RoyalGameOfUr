@@ -1,22 +1,27 @@
-﻿namespace RoyalGameOfUr
+﻿using System.Runtime.Serialization;
+using static RoyalGameOfUr.Player;
+
+namespace RoyalGameOfUr
 {
+    [DataContract]
     public class StrictGame : Game
     {
-        public Player CurrentPlayer { get; private set; }
+        [DataMember]
+        public PlayerId CurrentPlayerId { get; private set; }
 
         public StrictGame() 
             : base()
         {
-            CurrentPlayer = random.NextDouble() < 0.5 ? PlayerA : PlayerB;
+            CurrentPlayerId = random.NextDouble() < 0.5 ? PlayerId.A : PlayerId.B;
         }
 
         public override void Move(MoveInfo validMove)
         {
-            if(validMove.PlayerId == CurrentPlayer.Id)
+            if(validMove.PlayerId == CurrentPlayerId)
             {
                 base.Move(validMove);
 
-                CurrentPlayer = CurrentPlayer.Id == Player.PlayerId.A ? PlayerB : PlayerA;
+                CurrentPlayerId = CurrentPlayerId == PlayerId.A ? PlayerId.B : PlayerId.B;
             }
         }
     }

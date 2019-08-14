@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using static RoyalGameOfUr.Board;
 
 namespace RoyalGameOfUr
@@ -14,6 +15,7 @@ namespace RoyalGameOfUr
     /// 04 05 06 07 08 09 10 11
     /// 03 02 01 00       13 12
     /// </summary>
+    [DataContract]
     public class Game : IGame
     {
         public const int TotalPieces = 7;
@@ -21,9 +23,13 @@ namespace RoyalGameOfUr
 
         protected static readonly Random random = new Random();
 
+        [DataMember]
         public Player PlayerA { get; private set; }
+
+        [DataMember]
         public Player PlayerB { get; private set; }
 
+        [DataMember]
         public Board Board { get; private set; }
 
         public event EventHandler<Player> Win;

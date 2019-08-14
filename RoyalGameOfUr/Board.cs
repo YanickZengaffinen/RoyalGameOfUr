@@ -1,14 +1,20 @@
-﻿using static RoyalGameOfUr.Player;
+﻿using System;
+using System.Runtime.Serialization;
+using static RoyalGameOfUr.Player;
 
 namespace RoyalGameOfUr
 {
+    [DataContract]
     public class Board
     {
         public enum OccupationState { Empty, Me, Other }
 
         public const int PathLength = 13;
 
+        [DataMember]
         private readonly bool[] a;
+
+        [DataMember]
         private readonly bool[] b;
 
         public Board()
