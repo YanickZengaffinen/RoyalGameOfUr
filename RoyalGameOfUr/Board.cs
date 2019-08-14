@@ -35,8 +35,7 @@ namespace RoyalGameOfUr
         /// </summary>
         public void Move(MoveInfo validMove)
         {
-            var player = validMove.Player;
-            var me = player.Id == PlayerId.A ? a : b;
+            var me = validMove.PlayerId == PlayerId.A ? a : b;
 
             if (validMove.New)
             {
@@ -54,7 +53,7 @@ namespace RoyalGameOfUr
 
             if(validMove.DoesKillEnemy)
             {
-                var other = player.Id == PlayerId.A ? b : a;
+                var other = validMove.PlayerId == PlayerId.A ? b : a;
                 other[validMove.EndIndex] = false;
             }
         }

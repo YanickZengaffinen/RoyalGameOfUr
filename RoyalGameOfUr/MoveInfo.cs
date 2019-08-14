@@ -1,11 +1,13 @@
-﻿namespace RoyalGameOfUr
+﻿using static RoyalGameOfUr.Player;
+
+namespace RoyalGameOfUr
 {
     public class MoveInfo
     {
         /// <summary>
         /// The player executing the move
         /// </summary>
-        public Player Player { get; set; }
+        public PlayerId PlayerId { get; set; }
 
         /// <summary>
         /// Where does the piece lay at the beginning of the move
@@ -51,5 +53,18 @@
         /// Is the game won
         /// </summary>
         public bool Win { get; set; }
+
+        /// <summary>
+        /// Compare the moves origin and destination 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool IsSame(MoveInfo other)
+        {
+            return 
+                other.PlayerId == PlayerId && 
+                other.StartIndex == StartIndex && 
+                other.EndIndex == EndIndex;
+        }
     }
 }

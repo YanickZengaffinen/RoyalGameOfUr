@@ -14,12 +14,12 @@ namespace RoyalGameOfUr
     /// 04 05 06 07 08 09 10 11
     /// 03 02 01 00       13 12
     /// </summary>
-    public class Game
+    public class Game : IGame
     {
         public const int TotalPieces = 7;
         public const int Dices = 4;
 
-        private static readonly Random random = new Random();
+        protected static readonly Random random = new Random();
 
         public Player PlayerA { get; private set; }
         public Player PlayerB { get; private set; }
@@ -43,46 +43,35 @@ namespace RoyalGameOfUr
             };
         }
 
-        public void Move(MoveInfo validMove)
+        public virtual void Move(MoveInfo validMove)
         {
-            var me = validMove.Player;
+            var me = validMove.PlayerId == Player.PlayerId.A ? PlayerA : PlayerB;
 
             Board.Move(validMove);
 
-            if(validMove.New)
+            if (validMove.New)
             {
                 me.PiecesNotYetOnBoard--;
             }
 
-            if(validMove.Finish)
+            if (validMove.Finish)
             {
                 me.PiecesFinished++;
             }
 
-            if(validMove.DoesKillEnemy)
+            if (validMove.DoesKillEnemy)
             {
-                var other = validMove.Player.Id == Player.PlayerId.A ? PlayerB : PlayerA;
+                var other = validMove.PlayerId == Player.PlayerId.A ? PlayerB : PlayerA;
                 other.PiecesNotYetOnBoard++;
             }
 
             OnMoved(validMove);
 
-            if(validMove.Win)
+            if (validMove.Win)
             {
                 OnWin(me);
             }
         }
-
-        protected virtual void OnMoved(MoveInfo info)
-        {
-            Moved?.Invoke(this, info);
-        }
-
-        protected virtual void OnWin(Player player)
-        {
-            Win?.Invoke(this, player);
-        }
-
         public IEnumerable<MoveInfo> GetPossibleMoves(Player player, int score)
         {
             var moves = new List<MoveInfo>();
@@ -92,11 +81,11 @@ namespace RoyalGameOfUr
             {
                 var endIndex = score - 1;
                 var occupied = Board.IsOccupied(player, endIndex);
-                if (occupied != OccupationState.Me) 
+                if (occupied != OccupationState.Me)
                 {
                     moves.Add(new MoveInfo()
                     {
-                        Player = player,
+                        PlayerId = player.Id,
                         StartIndex = -1,
                         EndIndex = score - 1,
                         CanMoveAgain = Board.IsRosette(score - 1),
@@ -108,35 +97,40 @@ namespace RoyalGameOfUr
             }
 
             //Move existing pieces
-            for(int i = 0; i < PathLength; i++)
+            for (int i = 0; i < PathLength; i++)
             {
-                if(Board.IsOccupied(player, i) == OccupationState.Me)
+                if (Board.IsOccupied(player, i) == OccupationState.Me)
                 {
                     int endIndex = i + score;
-                    if(endIndex < PathLength) //Normal move
+                    if (endIndex < PathLength) //Normal move
                     {
                         var occupied = Board.IsOccupied(player, endIndex);
-                        if(occupied != OccupationState.Me)
+                        if (occupied != OccupationState.Me)
                         {
                             bool startSafe = Board.IsSafe(i);
                             bool endSafe = Board.IsSafe(endIndex);
-                            moves.Add(new MoveInfo()
+                            bool doesKill = occupied == OccupationState.Other;
+
+                            if (!endSafe || !doesKill)
                             {
-                                Player = player,
-                                StartIndex = i,
-                                EndIndex = endIndex,
-                                NoLongerSafe = startSafe && !endSafe,
-                                IsSafe = endSafe,
-                                DoesKillEnemy = occupied == OccupationState.Other,
-                                CanMoveAgain = Board.IsRosette(endIndex)
-                            });
+                                moves.Add(new MoveInfo()
+                                {
+                                    PlayerId = player.Id,
+                                    StartIndex = i,
+                                    EndIndex = endIndex,
+                                    NoLongerSafe = startSafe && !endSafe,
+                                    IsSafe = endSafe,
+                                    DoesKillEnemy = doesKill,
+                                    CanMoveAgain = Board.IsRosette(endIndex)
+                                });
+                            }
                         }
                     }
-                    else if(endIndex == PathLength) //Finish piece
+                    else if (endIndex == PathLength) //Finish piece
                     {
                         moves.Add(new MoveInfo()
                         {
-                            Player = player,
+                            PlayerId = player.Id,
                             StartIndex = i,
                             EndIndex = endIndex,
                             Finish = true,
@@ -151,6 +145,16 @@ namespace RoyalGameOfUr
         }
 
 
+        protected virtual void OnMoved(MoveInfo info)
+        {
+            Moved?.Invoke(this, info);
+        }
+
+        protected virtual void OnWin(Player player)
+        {
+            Win?.Invoke(this, player);
+        }
+
         public int Roll()
         {
             int total = 0;
@@ -162,7 +166,7 @@ namespace RoyalGameOfUr
             return total;
         }
 
-        private int RollOne()
+        protected int RollOne()
         {
             //each dice is a tetrahedron with a 2/4 chance of rolling a white edge
             return random.NextDouble() < 0.5 ? 1 : 0;
