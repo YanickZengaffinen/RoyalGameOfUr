@@ -1,0 +1,172 @@
+﻿<Window x:Class="RoyalGameOfUr.Client.Game.GameView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RoyalGameOfUr.Client.Game"
+        xmlns:converters="clr-namespace:RoyalGameOfUr.Client.Base.Converters"
+        mc:Ignorable="d"
+        Title="GameView" Height="720" Width="1280">
+    <Window.Resources>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <Style TargetType="local:Field">
+            <Setter Property="Background" Value="Gray"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Rolled}" Value="False">
+                    <Setter Property="Opacity" Value="0.25" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label>Current Player</Label>
+            <Label Content="{Binding CurrentPlayerId}"/>
+        </StackPanel>
+        <Grid Width="1200" Height="450" x:Name="BoardGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <!-- A -->
+            <local:Field Grid.Row="0" Grid.Column="0"
+                     Board="{Binding Game.Board}"
+                     FieldId="A3"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="0" Grid.Column="1"
+                     Board="{Binding Game.Board}"
+                     FieldId="A2"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="0" Grid.Column="2"
+                     Board="{Binding Game.Board}"
+                     FieldId="A1"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="0" Grid.Column="3"
+                     Board="{Binding Game.Board}"
+                     FieldId="A0"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="0" Grid.Column="4"
+                     Board="{Binding Game.Board}"
+                     FieldId="A-1"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="0" Grid.Column="6"
+                     Board="{Binding Game.Board}"
+                     FieldId="A13"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="0" Grid.Column="7"
+                     Board="{Binding Game.Board}"
+                     FieldId="A12"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <Label Grid.Row="0" Grid.Column="4" Width="25" Height="25"
+                   Content="{Binding ANew}"/>
+            <Label Grid.Row="0" Grid.Column="5" Width="25" Height="25"
+                Content="{Binding AFinished}"/>
+
+            <!-- M -->
+            <local:Field Grid.Row="1" Grid.Column="0"
+                     Board="{Binding Game.Board}"
+                     FieldId="M4"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="1" Grid.Column="1"
+                     Board="{Binding Game.Board}"
+                     FieldId="M5"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="1" Grid.Column="2"
+                     Board="{Binding Game.Board}"
+                     FieldId="M6"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="1" Grid.Column="3"
+                     Board="{Binding Game.Board}"
+                     FieldId="M7"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="1" Grid.Column="4"
+                     Board="{Binding Game.Board}"
+                     FieldId="M8"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="1" Grid.Column="5"
+                     Board="{Binding Game.Board}"
+                     FieldId="M9"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="1" Grid.Column="6"
+                     Board="{Binding Game.Board}"
+                     FieldId="M10"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="1" Grid.Column="7"
+                     Board="{Binding Game.Board}"
+                     FieldId="M11"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            
+            <!-- B -->
+            <local:Field Grid.Row="2" Grid.Column="0"
+                     Board="{Binding Game.Board}"
+                     FieldId="B3"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="2" Grid.Column="1"
+                     Board="{Binding Game.Board}"
+                     FieldId="B2"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="2" Grid.Column="2"
+                     Board="{Binding Game.Board}"
+                     FieldId="B1"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="2" Grid.Column="3"
+                     Board="{Binding Game.Board}"
+                     FieldId="B0"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="2" Grid.Column="4"
+                     Board="{Binding Game.Board}"
+                     FieldId="B-1"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="2" Grid.Column="6"
+                     Board="{Binding Game.Board}"
+                     FieldId="B13"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <local:Field Grid.Row="2" Grid.Column="7"
+                     Board="{Binding Game.Board}"
+                     FieldId="B12"
+                     Command="{Binding ButtonClickedCommand}"
+                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+            <Label Grid.Row="2" Grid.Column="4" Width="25" Height="25"
+                   Content="{Binding BNew}"/>
+            <Label Grid.Row="2" Grid.Column="5" Width="25" Height="25"
+                Content="{Binding BFinished}"/>
+        </Grid>
+        <StackPanel Orientation="Horizontal">
+            <Button Command="{Binding RollCommand}" IsEnabled="{Binding Rolled, Converter={StaticResource InverseBooleanConverter}}">Roll Dice</Button>
+            <Label Content="{Binding LastRoll}"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

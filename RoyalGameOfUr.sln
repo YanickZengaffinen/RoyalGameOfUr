@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZenAI", "ZenAI", "{98E88F66
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetworks", "ZenAI\NeuralNetworks\NeuralNetworks.csproj", "{84FB8E6D-1585-4C89-A125-A58B16BDD853}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalGameOfUr.Client", "RoyalGameOfUr.Client\RoyalGameOfUr.Client.csproj", "{3CD65247-2DCC-444B-943F-27F583720765}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{84FB8E6D-1585-4C89-A125-A58B16BDD853}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84FB8E6D-1585-4C89-A125-A58B16BDD853}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84FB8E6D-1585-4C89-A125-A58B16BDD853}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CD65247-2DCC-444B-943F-27F583720765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CD65247-2DCC-444B-943F-27F583720765}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CD65247-2DCC-444B-943F-27F583720765}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CD65247-2DCC-444B-943F-27F583720765}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
