@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using static RoyalGameOfUr.Player;
 
 namespace RoyalGameOfUr
@@ -15,6 +16,32 @@ namespace RoyalGameOfUr
 
         [DataMember]
         public bool[] B { get; private set; }
+
+        public event EventHandler Changed;
+
+        /// <summary>
+        /// A03 A02 A01 A00 --- --- A13 A12
+        /// M04 M05 M06 M07 M08 M09 M10 M11
+        /// B03 B02 B01 B00 --- --- B13 B12
+        /// </summary>
+        public PlayerId this[string field]
+        {
+            get
+            {
+                int index = int.Parse(field.Substring(1));
+                switch(field[0])
+                {
+                    case 'A':
+                        return A[index] ? PlayerId.A : PlayerId.None;
+                    case 'B':
+                        return B[index] ? PlayerId.B : PlayerId.None;
+                    case 'M':
+                        return A[index] ? PlayerId.A : B[index] ? PlayerId.B : PlayerId.None;
+                }
+
+                return PlayerId.None;
+            }
+        }
 
         public Board()
         {
@@ -61,6 +88,13 @@ namespace RoyalGameOfUr
                 var other = validMove.PlayerId == PlayerId.A ? B : A;
                 other[validMove.EndIndex] = false;
             }
+
+            OnChanged();
+        }
+
+        protected virtual void OnChanged()
+        {
+            Changed?.Invoke(this, EventArgs.Empty);
         }
 
         public bool IsRosette(int index)
@@ -76,10 +110,10 @@ namespace RoyalGameOfUr
             return index == 07;
         }
 
-        public OccupationState IsOccupied(Player view, int index)
+        public OccupationState IsOccupied(PlayerId viewId, int index)
         {
-            var me = view.Id == PlayerId.A ? A : B;
-            var other = view.Id == PlayerId.A ? B : A;
+            var me = viewId == PlayerId.A ? A : B;
+            var other = viewId == PlayerId.A ? B : A;
 
             if (me[index])
             {

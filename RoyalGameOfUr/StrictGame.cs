@@ -15,6 +15,7 @@ namespace RoyalGameOfUr
         public StrictGame() 
             : base()
         {
+            LastRoll = -1;
             CurrentPlayerId = random.NextDouble() < 0.5 ? PlayerId.A : PlayerId.B;
         }
 
@@ -26,7 +27,10 @@ namespace RoyalGameOfUr
             {
                 base.Move(validMove);
 
-                CurrentPlayerId = CurrentPlayerId == PlayerId.A ? PlayerId.B : PlayerId.B;
+                if (!validMove.CanMoveAgain)
+                {
+                    SwitchTurns();
+                }
 
                 LastRoll = -1;
             }
@@ -35,7 +39,19 @@ namespace RoyalGameOfUr
         public override int Roll()
         {
             LastRoll = base.Roll();
+
+            if(LastRoll == 0)
+            {
+                SwitchTurns();
+            }
+
             return LastRoll;
+        }
+
+        private void SwitchTurns()
+        {
+            CurrentPlayerId = CurrentPlayerId == PlayerId.A ? PlayerId.B : PlayerId.A;
+            LastRoll = -1;
         }
     }
 }

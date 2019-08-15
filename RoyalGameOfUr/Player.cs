@@ -5,7 +5,7 @@ namespace RoyalGameOfUr
     [DataContract]
     public class Player
     {
-        public enum PlayerId { A, B }
+        public enum PlayerId { A, B, None }
 
         [DataMember]
         public PlayerId Id { get; }

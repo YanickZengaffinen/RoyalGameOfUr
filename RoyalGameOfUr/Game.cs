@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using static RoyalGameOfUr.Board;
+using static RoyalGameOfUr.Player;
 
 namespace RoyalGameOfUr
 {
@@ -34,6 +35,8 @@ namespace RoyalGameOfUr
 
         public event EventHandler<Player> Win;
         public event EventHandler<MoveInfo> Moved;
+
+        private MoveInfo LastMove { get; set; }
 
         public Game()
         {
@@ -71,6 +74,8 @@ namespace RoyalGameOfUr
                 other.PiecesNotYetOnBoard++;
             }
 
+
+            LastMove = validMove;
             OnMoved(validMove);
 
             if (validMove.Win)
@@ -78,76 +83,111 @@ namespace RoyalGameOfUr
                 OnWin(me);
             }
         }
-        public IEnumerable<MoveInfo> GetPossibleMoves(Player player, int score)
+        public IEnumerable<MoveInfo> GetPossibleMoves(PlayerId playerId, int score)
         {
             var moves = new List<MoveInfo>();
 
-            //Add a piece to the map
-            if (player.PiecesNotYetOnBoard > 0)
+            //Score 0 means the move is skipped
+            if(score == 0)
             {
-                var endIndex = score - 1;
-                var occupied = Board.IsOccupied(player, endIndex);
-                if (occupied != OccupationState.Me)
-                {
-                    moves.Add(new MoveInfo()
-                    {
-                        PlayerId = player.Id,
-                        StartIndex = -1,
-                        EndIndex = score - 1,
-                        CanMoveAgain = Board.IsRosette(score - 1),
-                        IsSafe = Board.IsSafe(score - 1),
-                        New = true,
-                        DoesKillEnemy = occupied == OccupationState.Other
-                    });
-                }
+                return moves;
             }
 
-            //Move existing pieces
-            for (int i = 0; i < PathLength; i++)
+            //If the player lands on a rosette he is allowed another move with the same piece
+            if (LastMove?.CanMoveAgain == true)
             {
-                if (Board.IsOccupied(player, i) == OccupationState.Me)
-                {
-                    int endIndex = i + score;
-                    if (endIndex < PathLength) //Normal move
-                    {
-                        var occupied = Board.IsOccupied(player, endIndex);
-                        if (occupied != OccupationState.Me)
-                        {
-                            bool startSafe = Board.IsSafe(i);
-                            bool endSafe = Board.IsSafe(endIndex);
-                            bool doesKill = occupied == OccupationState.Other;
+                var move = CreateMove(playerId, LastMove.EndIndex, score);
 
-                            if (!endSafe || !doesKill)
-                            {
-                                moves.Add(new MoveInfo()
-                                {
-                                    PlayerId = player.Id,
-                                    StartIndex = i,
-                                    EndIndex = endIndex,
-                                    NoLongerSafe = startSafe && !endSafe,
-                                    IsSafe = endSafe,
-                                    DoesKillEnemy = doesKill,
-                                    CanMoveAgain = Board.IsRosette(endIndex)
-                                });
-                            }
-                        }
-                    }
-                    else if (endIndex == PathLength) //Finish piece
+                if(move != null)
+                {
+                    moves.Add(move);
+                }
+            }
+            else
+            {
+                var player = GetPlayer(playerId);
+
+                //Add a piece to the map
+                if (player.PiecesNotYetOnBoard > 0)
+                {
+                    var endIndex = score - 1;
+                    var occupied = Board.IsOccupied(playerId, endIndex);
+                    if (occupied != OccupationState.Me)
                     {
                         moves.Add(new MoveInfo()
                         {
-                            PlayerId = player.Id,
-                            StartIndex = i,
-                            EndIndex = endIndex,
-                            Finish = true,
-                            Win = player.PiecesNotYetOnBoard == 0 && player.PiecesFinished == TotalPieces - 1, //if it's the last piece then it's a win
-                            IsSafe = true
+                            PlayerId = playerId,
+                            StartIndex = -1,
+                            EndIndex = score - 1,
+                            CanMoveAgain = Board.IsRosette(score - 1),
+                            IsSafe = Board.IsSafe(score - 1),
+                            New = true,
+                            DoesKillEnemy = occupied == OccupationState.Other
                         });
                     }
                 }
+
+                //Move existing pieces
+                for (int i = 0; i < PathLength; i++)
+                {
+                    var move = CreateMove(playerId, i, score);
+
+                    if(move != null)
+                    {
+                        moves.Add(move);
+                    }
+                }
             }
+           
 
             return moves;
+        }
+
+        private MoveInfo CreateMove(in PlayerId playerId, in int startIndex, in int score)
+        {
+            var player = GetPlayer(playerId);
+            if (Board.IsOccupied(playerId, startIndex) == OccupationState.Me)
+            {
+                int endIndex = startIndex + score;
+                if (endIndex < PathLength) //Normal move
+                {
+                    var occupied = Board.IsOccupied(playerId, endIndex);
+                    if (occupied != OccupationState.Me)
+                    {
+                        bool startSafe = Board.IsSafe(startIndex);
+                        bool endSafe = Board.IsSafe(endIndex);
+                        bool doesKill = occupied == OccupationState.Other;
+
+                        if (!endSafe || !doesKill)
+                        {
+                            return new MoveInfo()
+                            {
+                                PlayerId = playerId,
+                                StartIndex = startIndex,
+                                EndIndex = endIndex,
+                                NoLongerSafe = startSafe && !endSafe,
+                                IsSafe = endSafe,
+                                DoesKillEnemy = doesKill,
+                                CanMoveAgain = Board.IsRosette(endIndex)
+                            };
+                        }
+                    }
+                }
+                else if (endIndex == PathLength) //Finish piece
+                {
+                    return new MoveInfo()
+                    {
+                        PlayerId = playerId,
+                        StartIndex = startIndex,
+                        EndIndex = endIndex,
+                        Finish = true,
+                        Win = player.PiecesNotYetOnBoard == 0 && player.PiecesFinished == TotalPieces - 1, //if it's the last piece then it's a win
+                        IsSafe = true
+                    };
+                }
+            }
+
+            return null;
         }
 
 
@@ -176,6 +216,11 @@ namespace RoyalGameOfUr
         {
             //each dice is a tetrahedron with a 2/4 chance of rolling a white edge
             return random.NextDouble() < 0.5 ? 1 : 0;
+        }
+
+        public Player GetPlayer(PlayerId id)
+        {
+            return id == PlayerId.A ? PlayerA : PlayerB;
         }
     }
 }
