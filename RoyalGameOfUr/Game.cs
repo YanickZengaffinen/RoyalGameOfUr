@@ -161,7 +161,7 @@ namespace RoyalGameOfUr
             Win?.Invoke(this, player);
         }
 
-        public int Roll()
+        public virtual int Roll()
         {
             int total = 0;
             for(int i = 0; i < Dices; i++)

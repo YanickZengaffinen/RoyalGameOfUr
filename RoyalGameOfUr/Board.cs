@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using static RoyalGameOfUr.Player;
 
 namespace RoyalGameOfUr
@@ -9,29 +8,29 @@ namespace RoyalGameOfUr
     {
         public enum OccupationState { Empty, Me, Other }
 
-        public const int PathLength = 13;
+        public const int PathLength = 14;
 
         [DataMember]
-        private readonly bool[] a;
+        public bool[] A { get; private set; }
 
         [DataMember]
-        private readonly bool[] b;
+        public bool[] B { get; private set; }
 
         public Board()
         {
-            a = new bool[PathLength];
-            b = new bool[PathLength];
+            A = new bool[PathLength];
+            B = new bool[PathLength];
         }
 
         private Board(bool[] a, bool[] b)
         {
-            this.a = a;
-            this.b = b;
+            this.A = a;
+            this.B = b;
         }
 
         public Board Clone()
         {
-            return new Board((bool[])a.Clone(), (bool[])b.Clone());
+            return new Board((bool[])A.Clone(), (bool[])B.Clone());
         }
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace RoyalGameOfUr
         /// </summary>
         public void Move(MoveInfo validMove)
         {
-            var me = validMove.PlayerId == PlayerId.A ? a : b;
+            var me = validMove.PlayerId == PlayerId.A ? A : B;
 
             if (validMove.New)
             {
@@ -59,7 +58,7 @@ namespace RoyalGameOfUr
 
             if(validMove.DoesKillEnemy)
             {
-                var other = validMove.PlayerId == PlayerId.A ? b : a;
+                var other = validMove.PlayerId == PlayerId.A ? B : A;
                 other[validMove.EndIndex] = false;
             }
         }
@@ -79,8 +78,8 @@ namespace RoyalGameOfUr
 
         public OccupationState IsOccupied(Player view, int index)
         {
-            var me = view.Id == PlayerId.A ? a : b;
-            var other = view.Id == PlayerId.A ? b : a;
+            var me = view.Id == PlayerId.A ? A : B;
+            var other = view.Id == PlayerId.A ? B : A;
 
             if (me[index])
             {
