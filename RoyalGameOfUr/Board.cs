@@ -10,6 +10,7 @@ namespace RoyalGameOfUr
         public enum OccupationState { Empty, Me, Other }
 
         public const int PathLength = 14;
+        public const int SafeIndex = 7;
 
         [DataMember]
         public bool[] A { get; private set; }
@@ -107,7 +108,7 @@ namespace RoyalGameOfUr
 
         public bool IsSafe(int index)
         {
-            return index == 07;
+            return index == SafeIndex;
         }
 
         public OccupationState IsOccupied(PlayerId viewId, int index)
